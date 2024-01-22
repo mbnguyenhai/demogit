@@ -1,0 +1,21 @@
+- hosts: web_app
+  become: true
+  tasks:
+  - name: Update
+    shell: sudo apt update -y
+- hosts: backend
+  become: true
+  tasks:
+  - name: InstallPrometheus
+    shell: |
+      apt install prometheus -y
+      systemctl enable prometheus
+
+---
+- name: Install nginx
+  apt: 
+    name: nginx
+    state: present
+    register: msg
+- debug: 
+      msg: "{{ msg }}"
